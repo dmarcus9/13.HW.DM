@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mars</title>
+  <!-- https://getbootstrap.com/  then to  BootstrapCDN to get line below and 3 script lines on bottom of doc -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+      <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+    </div>
+
+    <!--  link app.py with variable names  mars_data
+test in jupyter...put into Scrape_Mars.py...put result into dictionary...
+at end returned to app.py...insert into mongo -->
+
+    <div class="row" id="mars-hw">
+      <div class="col-md-12">
+
+        <h1><strong>Latest Mars News</strong></h1>
+        <h2>{{ mars_data["title"] }}</h2>
+        <p>{{ mars_data["paragraph"] }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- add 3 types -->
+      <div class="col-8 col-md-8 col-sm-8">
+        <h1><strong>Featured Mars Image</strong></h1>
+        <!-- step b,   class...fluid sorted it;  alt= is for blind ppl...spoken -->
+        <img class="img-fluid" src="{{mars_data['featured_image_url']}}" alt="Featured Mars image">
+      </div>
+
+      <div class="col-4 col-md-4">
+        <h2><strong>Current Mars Weather</strong></h2>
+        <!-- step c -->
+        <p>{{ mars_data["mars_weather"] }}</p>
+
+        <h2><strong>Mars Facts</strong></h2>
+        <!-- step d -->
+        <!-- "| safe" used Jinja (as a part of Flask), to show the table, not the html string  -->
+        {{ mars_data["html_Mars_Facts_from_table"] | safe }}
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- step e... -->
+      <!-- when rendering with jinja (reads in python code & connects it to html),
+        use a loop in jinja formatting -->
+      <div class="page-header">
+        <h2><strong>Mars Hemispheres</strong></h2>
+      </div>
+
+      {% for hemisphere in mars_data["Mars_Hemi_Dict"] %}
+
+      <div class="col-6 col-md-6 col-sm-6">
+        <div class="thumbnail">
+          <img class="img-fluid" src='{{ hemisphere.img_url }}'>
+          <h3>{{ hemisphere.title }}</h3>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <br />
+    <!-- line below calls mars_data in raw form from app.py -->
+    {{ mars_data }}
+
+
+  </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</html>
